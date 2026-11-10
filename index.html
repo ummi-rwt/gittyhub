@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portfolio · Mes projets Data & IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#f3efe8; --ink:#1d1a2e; --muted:#5d5a70; --wall:#e4ded2; --light:#ffd9a0; --room:#fff3dc;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#15132b;--ink:#f4efe6;--muted:#a9a6c2;--wall:#1f1c3d;--light:#ffbf69;--room:#3a2f2a;color-scheme:dark}
+}
+:root[data-theme="dark"]{--bg:#15132b;--ink:#f4efe6;--muted:#a9a6c2;--wall:#1f1c3d;--light:#ffbf69;--room:#3a2f2a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,sans-serif;min-height:100vh}
+header{max-width:760px;margin:0 auto;padding:56px 24px 24px}
+h1{font-size:clamp(2.2rem,6vw,3.6rem);line-height:1.05;margin:0 0 14px;font-weight:800;letter-spacing:-.02em}
+header p{margin:0;color:var(--muted);font-size:1.1rem;line-height:1.5;max-width:52ch}
+main{max-width:1000px;margin:0 auto;padding:24px 24px 72px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px 28px}
+.door{display:block;text-decoration:none;color:inherit;perspective:900px}
+.frame{position:relative;aspect-ratio:3/4.6;border-radius:999px 999px 6px 6px;background:var(--wall);padding:10px;box-shadow:inset 0 0 0 3px color-mix(in srgb,var(--ink) 18%,transparent)}
+.room{position:absolute;inset:10px;border-radius:999px 999px 2px 2px;background:radial-gradient(ellipse at 50% 85%,var(--light),var(--room) 70%);display:flex;flex-direction:column;justify-content:flex-end;padding:18px 14px;text-align:center;color:#2a2118}
+.room b{font-size:1.05rem;line-height:1.2}
+.room span{font-size:.85rem;margin-top:6px;opacity:.8}
+.panel{position:absolute;inset:10px;border-radius:999px 999px 2px 2px;background:var(--c);transform-origin:left center;transition:transform .7s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#fff;text-align:center;padding:0 12px;box-shadow:inset 0 0 0 4px rgba(255,255,255,.18)}
+.panel .ico{font-size:2.6rem}
+.panel .t{font-weight:800;font-size:1.15rem;line-height:1.15}
+.panel i{position:absolute;right:16px;top:58%;width:12px;height:12px;border-radius:50%;background:#ffe9b8}
+.door:hover .panel,.door:focus-visible .panel{transform:rotateY(-72deg)}
+.door:focus-visible{outline:3px solid var(--ink);outline-offset:6px;border-radius:12px}
+.soon{display:inline-block;margin-top:8px;font-size:.75rem;padding:3px 10px;border-radius:99px;background:rgba(0,0,0,.14)}
+.hint{text-align:center;color:var(--muted);padding:0 24px 40px;font-size:.95rem}
+@media (prefers-reduced-motion:reduce){.panel{transition:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Pousse une porte.</h1>
+  <p>Je m’appelle <b>[Ton prénom]</b>. Chaque porte ouvre un projet data ou IA différent, avec son outil, ses données et ce que j’y ai appris.</p>
+</header>
+<main id="doors"></main>
+<p class="hint">Passe la souris sur une porte (ou touche-la sur mobile) pour l’ouvrir.</p>
+
+<script>
+// ✏️ C’EST ICI QUE TU MODIFIES TES PROJETS.
+// Pour ajouter une porte : copie une ligne et change les textes.
+// Quand un projet est prêt : mets son lien dans "lien" et "pret: true".
+const projets = [
+  { titre:"Dashboard data",       icone:"📊", couleur:"#2f6fed", outil:"Visualisation · Streamlit",   lien:"", pret:false },
+  { titre:"Projet IA",            icone:"🧠", couleur:"#7b4fd6", outil:"Machine learning",            lien:"", pret:false },
+  { titre:"Chatbot",              icone:"💬", couleur:"#d9467a", outil:"LLM · API",                   lien:"", pret:false },
+  { titre:"Marketing, IA & Data", icone:"🎯", couleur:"#e07a1f", outil:"Segmentation · BI",           lien:"", pret:false },
+  { titre:"Senteurs",             icone:"🌸", couleur:"#2e9d8a", outil:"Dataset · Clustering",        lien:"", pret:false },
+  { titre:"Air & trafic",         icone:"🌍", couleur:"#4b8f3a", outil:"Données publiques · Cartes",  lien:"", pret:false }
+];
+
+const conteneur = document.getElementById("doors");
+projets.forEach(p => {
+  const a = document.createElement("a");
+  a.className = "door";
+  a.href = p.pret ? p.lien : "#";
+  if (p.pret) { a.target = "_blank"; a.rel = "noopener"; }
+  else { a.addEventListener("click", e => e.preventDefault()); }
+  a.setAttribute("aria-label", p.titre + (p.pret ? "" : " (bientôt disponible)"));
+  a.innerHTML =
+    '<div class="frame">' +
+      '<div class="room"><b>' + p.titre + '</b><span>' + p.outil + '</span>' +
+        (p.pret ? '' : '<span class="soon">Bientôt disponible</span>') + '</div>' +
+      '<div class="panel" style="--c:' + p.couleur + '"><span class="ico">' + p.icone + '</span>' +
+        '<span class="t">' + p.titre + '</span><i></i></div>' +
+    '</div>';
+  conteneur.appendChild(a);
+});
+</script>
+</body>
+</html>
